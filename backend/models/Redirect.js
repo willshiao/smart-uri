@@ -8,9 +8,11 @@ const Schema = mongoose.Schema;
 const redirectSchema = new Schema({
   slug: String,
   rules: [redirectRuleSchema],
-  visits: Number,
   enabled: Boolean,
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
+  stats: {
+    visits: Number,
+  },
 });
 
 redirectSchema.index({ owner: 1 });

@@ -9,6 +9,11 @@ const requestSchema = new Schema({
   request: Schema.Types.Mixed,  // Express request object details
   ip: String,  // The source IP of the request
   slug: String,  // The URL slug the request was made for
+  info: {  // Information generated from the request
+    country: String,  // The country of the request
+    isMobile: Boolean,
+    isBot: Boolean,
+  },
   createdAt: {
     type: Date,
     expires: config.get('request.ttl'),
