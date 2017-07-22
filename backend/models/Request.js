@@ -13,6 +13,8 @@ const requestSchema = new Schema({
     country: String,  // The country of the request
     isMobile: Boolean,
     isBot: Boolean,
+    model: String,
+    deviceType: String,
   },
   createdAt: {
     type: Date,

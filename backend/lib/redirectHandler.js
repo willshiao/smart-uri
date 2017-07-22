@@ -2,9 +2,10 @@
 
 const _ = require('lodash');
 const config = require('config');
+const device = require('device');
 const jsonLogic = require('json-logic-js');
 
-const logger = require('../lib/logger');
+const logger = require('../lib/logger').loggers.get('api');
 
 const Redirect = require('../models/Redirect');
 const Request = require('../models/Request');
@@ -28,6 +29,7 @@ class RedirectHandler {
       .exec()
       .then((data) => {
         if(!data) return Promise.reject(new MissingRedirectError(slug));
+        if(data.extraInfo) RedirectHandler.extractInfo(request);
 
         _(data.rules)
           .filter(rule => rule.enabled)
@@ -51,6 +53,16 @@ class RedirectHandler {
         RedirectHandler.handleMissing(slug, res);
       })
       .catch(err => RedirectHandler.handleError(res, err));
+  }
+
+  static extractInfo(req) {
+    const dev = device(req.request.headers['user-agent'], config.get('request.device'));
+    req.info = {
+      isMobile: dev.is('phone'),
+      isBot: dev.is('bot'),
+      deviceType: dev.type,
+      model: dev.model,
+    };
   }
 
   static checkRule(rule, req) {

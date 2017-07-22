@@ -21,6 +21,6 @@ app.use(indexRoute);
 mongoose.connect(config.get('db.url'), config.get('db.options'))
   .then(() => {
     app.listen(config.get('site.port'), () => {
-      logger.debug(`Listening on port ${config.get('site.port')}`);
+      logger.info(`Listening on port ${config.get('site.port')}`);
     });
   });
