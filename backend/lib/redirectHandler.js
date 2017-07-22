@@ -2,6 +2,9 @@
 
 const _ = require('lodash');
 const config = require('config');
+const jsonLogic = require('json-logic-js');
+
+const logger = require('../lib/logger');
 
 const Redirect = require('../models/Redirect');
 const Request = require('../models/Request');
@@ -16,6 +19,7 @@ class RedirectHandler {
       request: _.pick(req, config.get('request.properties')),
       ip: req.ip,
       result: '',
+      createdAt: new Date(),
     };
     let target;
 
@@ -24,7 +28,19 @@ class RedirectHandler {
       .exec()
       .then((data) => {
         if(!data) return Promise.reject(new MissingRedirectError(slug));
-        target = data.defaultTarget;
+
+        _(data.rules)
+          .filter(rule => rule.enabled)
+          .some((rule) => {
+            logger.debug('Trying rule: ', rule);
+            if(RedirectHandler.checkRule(rule, request)) {
+              target = rule.target;
+              return true;
+            }
+            return false;
+          });
+        if(target === undefined) target = data.defaultTarget;
+
         request.result = target;
         return new Request(request).save();
       })
@@ -35,6 +51,12 @@ class RedirectHandler {
         RedirectHandler.handleMissing(slug, res);
       })
       .catch(err => RedirectHandler.handleError(res, err));
+  }
+
+  static checkRule(rule, req) {
+    if(rule.isLogicRule) return jsonLogic.apply(rule.condition, req);
+    logger.error(`Invalid rule type: ${rule.condition}`);
+    return null;
   }
 
   static logRequest(slug, req) {

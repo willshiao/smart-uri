@@ -13,6 +13,7 @@ const redirectRuleSchema = new Schema({
     matches: Number,  // Number of rule matches
     fails: Number,  // Number of rule fails
   },
+  target: String,  // URL to redirect to if matched
 });
 
 module.exports = mongoose.model('RedirectRule', redirectRuleSchema);
