@@ -12,6 +12,7 @@ module.exports = {
   },
   request: {
     ttl: 60 * 60 * 24 * 7,  // One week, in seconds
+    properties: ['protocol', 'query', 'secure'],  // Properties of the request object to keep
   },
   users: {
     roles: {
