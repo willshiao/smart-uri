@@ -6,5 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "William Shiao <willshiao@gmail.com>"
+  "author": "William Shiao <willshiao@gmail.com>",
+  "dependencies": {
+    "config": "^1.26.1",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.3",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.1.3",
+    "eslint-plugin-import": "^2.7.0"
+  }
 }
