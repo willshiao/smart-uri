@@ -17,10 +17,11 @@ const requestSchema = new Schema({
   createdAt: {
     type: Date,
     expires: config.get('request.ttl'),
+    default: new Date(),
   },
-}, { autoIndex: false, timestamps: true });
+}, { timestamps: true });
 
-// requestSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 });
+// requestSchema.index({ createdAt: 1 }, { expireAfterSeconds: config.get('request.ttl') });
 requestSchema.index({ slug: 1 });
 
 module.exports = mongoose.model('Request', requestSchema);
