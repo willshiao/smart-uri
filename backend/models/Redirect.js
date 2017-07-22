@@ -8,11 +8,12 @@ const Schema = mongoose.Schema;
 const redirectSchema = new Schema({
   slug: String,
   rules: [redirectRuleSchema],
-  enabled: Boolean,
+  enabled: { type: Boolean, default: true },
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
   stats: {
-    visits: Number,
+    visits: { type: Number, default: 0 },
   },
+  defaultTarget: String,  // Target to redirect to if all rules fail
 });
 
 redirectSchema.index({ owner: 1 });
