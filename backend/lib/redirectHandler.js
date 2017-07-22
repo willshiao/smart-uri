@@ -11,18 +11,30 @@ class RedirectHandler {
   static handleRedirect(req, res) {
     if(!req.params.slug) return RedirectHandler.handleMissing(req.params.slug, res);
     const slug = req.params.slug;
+    const request = {
+      slug,
+      request: _.pick(req, config.get('request.properties')),
+      ip: req.ip,
+      result: '',
+    };
+    let target;
 
-    RedirectHandler.logRequest(slug, req)
-      .then(() => Redirect.findOne({ slug })
-        .lean()
-        .exec())
+    Redirect.findOne({ slug })
+      .lean()
+      .exec()
       .then((data) => {
         if(!data) return Promise.reject(new MissingRedirectError(slug));
-        return res.redirect(data.defaultTarget);
+        target = data.defaultTarget;
+        request.result = target;
+        return new Request(request).save();
+      })
+      .then(() => {
+        res.redirect(target);
       })
       .catch(MissingRedirectError, () => {
         RedirectHandler.handleMissing(slug, res);
-      });
+      })
+      .catch(err => RedirectHandler.handleError(res, err));
   }
 
   static logRequest(slug, req) {
@@ -33,6 +45,10 @@ class RedirectHandler {
       ip: req.ip,
     })
       .save();
+  }
+
+  static handleError(res, err) {
+    return res.errorJson(err);
   }
 
   static handleMissing(slug, res) {

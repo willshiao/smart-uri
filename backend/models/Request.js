@@ -19,6 +19,7 @@ const requestSchema = new Schema({
     expires: config.get('request.ttl'),
     default: new Date(),
   },
+  result: String,  // The url that the user got redirected to
 }, { timestamps: true });
 
 // requestSchema.index({ createdAt: 1 }, { expireAfterSeconds: config.get('request.ttl') });
