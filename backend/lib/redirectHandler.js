@@ -24,7 +24,7 @@ class RedirectHandler {
     };
     let target;
 
-    Redirect.findOne({ slug })
+    Redirect.findOneAndUpdate({ slug }, { $inc: { 'stats.visits': 1 } })
       .lean()
       .exec()
       .then((data) => {
