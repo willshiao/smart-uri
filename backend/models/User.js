@@ -14,7 +14,7 @@ const userSchema = new Schema({
     index: { unique: true },
   },
   password: { type: String, required: true },  // Password hash
-  permissions: { type: Number, default: config.get('user.roles.User') },
+  role: { type: Number, default: config.get('user.roles.User') },
 });
 
 
@@ -32,12 +32,12 @@ userSchema.pre('save', function preSaveUser(next) {
 
 userSchema.statics.checkPasswords = function checkPass(pass, storedPass) {
   return bcrypt.compare(pass, storedPass)
-    .catch(err => Promise.resolve(false));
+    .catch(() => Promise.resolve(false));
 };
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password)
-    .catch(err => Promise.resolve(false));
+    .catch(() => Promise.resolve(false));
 };
 
 module.exports = mongoose.model('User', userSchema);

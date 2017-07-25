@@ -29,9 +29,7 @@ router.post('/login', (req, res) => {
       if(!valid) throw new AuthError('Invalid email or password');
       return jwtCheck.sign(dbUser);
     })
-    .then((jwt) => {
-      return res.successJson({ jwt });
-    })
+    .then(jwt => res.successJson({ jwt }))
     .catch(AuthError, (authError) => {
       res.failMsg(authError.message);
     })
@@ -56,7 +54,7 @@ router.post('/register', (req, res) => {
   // Check if user exists, but even in the case of a race condition,
   //  MongoDB's unique index check should handle it
   User.count({ email: user.email })
-    .then(count => {
+    .then((count) => {
       if(count > 0) throw new AuthError('User already exists.');
       return user.save();
     })
@@ -65,12 +63,11 @@ router.post('/register', (req, res) => {
       return jwtCheck.sign(savedUser);
     })
     .then(jwt => res.successJson({ jwt }))
-    .catch(AuthError, err => {
+    .catch(AuthError, (err) => {
       return res.failMsg('User already exists.');
     })
     .catch((err) => {
       res.errorMsg('An error occurred.');
-      console.log(err.message);
       logger.error('Registration error:', err);
     });
 });

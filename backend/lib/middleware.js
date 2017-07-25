@@ -1,21 +1,17 @@
 'use strict';
 
 const config = require('config');
-const h = require('./helpers');
+
 const mw = {};
 
 mw.isAuthenticated = (req, res, next) => {
-  if(req.user.permissions >= config.get('permissions.user'))
-    return next();
-  else
-    res.fail('Must be authenticated.', res);
+  if(req.user.role >= config.get('user.roles.User')) return next();
+  res.fail('Must be authenticated.');
 };
 
 mw.isAdmin = (req, res, next) => {
-  if(req.user && req.user.permissions >= config.get('permissions.admin'))
-    return next();
-  else
-    h.fail('Insufficient permissions', res);
+  if(req.user && req.user.role >= config.get('user.user.Admin')) return next();
+  res.fail('Insufficient permissions');
 };
 
 mw.enableCrossOrigin = (req, res, next) => {

@@ -18,7 +18,7 @@ const JwtCheck = {
     return signAsync({
       _id: user._id,
       email: user.email,
-      permissions: user.permissions,
+      role: user.role,
     }, config.get('jwt.secret'), { expiresIn: config.get('jwt.expiresIn') })
       .asCallback(cb);
   },
