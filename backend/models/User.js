@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const config = require('config');
 const bcrypt = require('bcrypt-as-promised');
+const Promise = require('bluebird');
 
 const Schema = mongoose.Schema;
 
@@ -30,11 +31,13 @@ userSchema.pre('save', function preSaveUser(next) {
 });
 
 userSchema.statics.checkPasswords = function checkPass(pass, storedPass) {
-  return bcrypt.compare(pass, storedPass);
+  return bcrypt.compare(pass, storedPass)
+    .catch(err => Promise.resolve(false));
 };
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+  return bcrypt.compare(candidatePassword, this.password)
+    .catch(err => Promise.resolve(false));
 };
 
 module.exports = mongoose.model('User', userSchema);

@@ -5,10 +5,8 @@ module.exports = {
     port: 3000,
   },
   jwt: {
-    key: 'changeme',  // Secret key used for JWTs
-    options: {
-      expiresIn: '5 days',
-    },
+    secret: 'changeme',  // Secret key used for JWTs
+    expiresIn: '5 days',
   },
   db: {
     url: 'mongodb://127.0.0.1:27017/smarturi',
