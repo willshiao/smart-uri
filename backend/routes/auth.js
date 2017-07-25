@@ -30,9 +30,7 @@ router.post('/login', (req, res) => {
       return jwtCheck.sign(dbUser);
     })
     .then(jwt => res.successJson({ jwt }))
-    .catch(AuthError, (authError) => {
-      res.failMsg(authError.message);
-    })
+    .catch(AuthError, authError => res.failMsg(authError.message))
     .catch((error) => {
       logger.error('Login error:', error);
       res.errorMsg('An error occurred.');
@@ -63,9 +61,7 @@ router.post('/register', (req, res) => {
       return jwtCheck.sign(savedUser);
     })
     .then(jwt => res.successJson({ jwt }))
-    .catch(AuthError, (err) => {
-      return res.failMsg('User already exists.');
-    })
+    .catch(AuthError, () => res.failMsg('User already exists.'))
     .catch((err) => {
       res.errorMsg('An error occurred.');
       logger.error('Registration error:', err);

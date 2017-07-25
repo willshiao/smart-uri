@@ -13,6 +13,7 @@ handlers.JwtErrorHandler = (err, req, res, next) => {
 };
 
 handlers.ErrorHandler = (err, req, res, next) => {
+  if(err instanceof SyntaxError) return res.failMsg('Invalid JSON.');
   logger.warn('Got error name: ', err);
   return res.errorMsg('An error occurred.');
 };
