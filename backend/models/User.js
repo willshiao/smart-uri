@@ -2,13 +2,40 @@
 
 const mongoose = require('mongoose');
 const config = require('config');
+const bcrypt = require('bcrypt-as-promised');
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email: String,
-  password: String,  // Password hash
-  permissions: { type: Number, default: config.get('users.roles.User') },
+  email: {
+    type: String,
+    required: true,
+    index: { unique: true },
+  },
+  password: { type: String, required: true },  // Password hash
+  permissions: { type: Number, default: config.get('user.roles.User') },
 });
 
+
+userSchema.pre('save', function preSaveUser(next) {
+  if(!this.isModified('password')) return next();
+
+  bcrypt.genSalt(config.get('db.bcryptSaltWorkFactor'))
+    .then(salt => bcrypt.hash(this.password, salt))
+    .then((hash) => {
+      this.password = hash;
+      next();
+    })
+    .catch(next);
+});
+
+userSchema.statics.checkPasswords = function checkPass(pass, storedPass) {
+  return bcrypt.compare(pass, storedPass);
+};
+
+userSchema.methods.comparePassword = function comparePassword(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 module.exports = mongoose.model('User', userSchema);
+
