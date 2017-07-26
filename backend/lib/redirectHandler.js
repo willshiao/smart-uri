@@ -4,6 +4,7 @@ const _ = require('lodash');
 const config = require('config');
 const device = require('device');
 const jsonLogic = require('json-logic-js');
+const validator = require('validator');
 
 const logger = require('../lib/logger').loggers.get('api');
 
@@ -36,7 +37,6 @@ class RedirectHandler {
         _(data.rules)
           .filter(rule => rule.enabled)
           .some((rule) => {
-            logger.debug('Trying rule: ', rule);
             const newTarget = RedirectHandler.checkRule(rule, request);
 
             if(newTarget !== null) {
@@ -70,16 +70,21 @@ class RedirectHandler {
   }
 
   static checkRule(rule, req) {
-    if(rule.isLogicRule && jsonLogic.apply(rule.condition, req)) return rule.target;
-    if(!rule.condition.type) {
-      logger.error(`Rule condition missing type: ${rule._id}`);
+    if(rule.type === 'jsonLogic') {
+      const result = jsonLogic.apply(rule.info, req);
+
+      if(result === true) return rule.target;
+      if(validator.isURL(result + '')) return result;
+      if(result) return rule.target;
       return null;
     }
-    if(rule.condition.type === 'roundRobin') {
-      if(!rule.condition.targets || rule.condition.targets.length <= 0) return null;
-      return rule.condition.targets[(req.visit - 1) % rule.condition.targets.length];
+
+    if(rule.type === 'roundRobin') {
+      if(!rule.info.targets || rule.info.targets.length <= 0) return null;
+      return rule.info.targets[(req.visit - 1) % rule.info.targets.length];
     }
-    logger.error(`Invalid rule type: ${rule.condition}`);
+
+    logger.error(`Invalid rule type: ${rule.type}`);
     return null;
   }
 
