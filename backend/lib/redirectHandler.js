@@ -12,6 +12,7 @@ const Redirect = require('../models/Redirect');
 const Request = require('../models/Request');
 const MissingRedirectError = require('../lib/error/MissingRedirectError');
 
+
 class RedirectHandler {
 
   static handleRedirect(req, res) {
@@ -36,14 +37,13 @@ class RedirectHandler {
 
         _(data.rules)
           .filter(rule => rule.enabled)
-          .some((rule) => {
+          .each((rule) => {
             const newTarget = RedirectHandler.checkRule(rule, request);
 
             if(newTarget !== null) {
               target = newTarget;
-              return true;
+              return false;  // break
             }
-            return false;
           });
         if(target === undefined) target = data.defaultTarget;
 
@@ -71,10 +71,9 @@ class RedirectHandler {
 
   static checkRule(rule, req) {
     if(rule.type === 'jsonLogic') {
-      const result = jsonLogic.apply(rule.info, req);
+      const result = jsonLogic.apply(rule.info.statement, req);
 
-      if(result === true) return rule.target;
-      if(validator.isURL(result + '')) return result;
+      if(rule.info.returnsUrl && validator.isURL(result + '')) return result;
       if(result) return rule.target;
       return null;
     }
