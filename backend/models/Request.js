@@ -21,6 +21,7 @@ const requestSchema = new Schema({
     expires: config.get('request.ttl'),
     default: new Date(),
   },
+  visit: Number,  // The visit number of the redirect
   result: String,  // The url that the user got redirected to
 }, { timestamps: true });
 

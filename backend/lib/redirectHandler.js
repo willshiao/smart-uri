@@ -12,6 +12,7 @@ const Request = require('../models/Request');
 const MissingRedirectError = require('../lib/error/MissingRedirectError');
 
 class RedirectHandler {
+
   static handleRedirect(req, res) {
     if(!req.params.slug) return RedirectHandler.handleMissing(req.params.slug, res);
     const slug = req.params.slug;
@@ -28,15 +29,18 @@ class RedirectHandler {
       .lean()
       .exec()
       .then((data) => {
-        if(!data) return Promise.reject(new MissingRedirectError(slug));
+        if(!data) throw new MissingRedirectError(slug);
         if(data.extraInfo) RedirectHandler.extractInfo(request);
+        request.visit = data.stats.visits;
 
         _(data.rules)
           .filter(rule => rule.enabled)
           .some((rule) => {
             logger.debug('Trying rule: ', rule);
-            if(RedirectHandler.checkRule(rule, request)) {
-              target = rule.target;
+            const newTarget = RedirectHandler.checkRule(rule, request);
+
+            if(newTarget !== null) {
+              target = newTarget;
               return true;
             }
             return false;
@@ -66,7 +70,15 @@ class RedirectHandler {
   }
 
   static checkRule(rule, req) {
-    if(rule.isLogicRule) return jsonLogic.apply(rule.condition, req);
+    if(rule.isLogicRule && jsonLogic.apply(rule.condition, req)) return rule.target;
+    if(!rule.condition.type) {
+      logger.error(`Rule condition missing type: ${rule._id}`);
+      return null;
+    }
+    if(rule.condition.type === 'roundRobin') {
+      if(!rule.condition.targets || rule.condition.targets.length <= 0) return null;
+      return rule.condition.targets[(req.visit - 1) % rule.condition.targets.length];
+    }
     logger.error(`Invalid rule type: ${rule.condition}`);
     return null;
   }
