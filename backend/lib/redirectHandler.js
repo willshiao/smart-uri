@@ -59,6 +59,26 @@ class RedirectHandler {
       .catch(err => RedirectHandler.handleError(res, err));
   }
 
+  /**
+   * Function to handle a POST request for new redirects
+   * @param  {Express.Request}    req
+   * @param  {Express.Response}   res
+   */
+  static handleNew(req, res) {
+    if(!req.body) return res.failMsg('JSON body required.');
+    
+  }
+
+  /**
+   * Function to handle a PUT request to update existing redirects
+   * @param  {Express.Request}    req
+   * @param  {Express.Response}   res
+   */
+  static handleUpdate(req, res) {
+    if(!req.body) return res.failMsg('JSON body required.');
+
+  }
+
   static extractInfo(req) {
     const dev = device(req.request.headers['user-agent'], config.get('request.device'));
     req.info = {
@@ -73,7 +93,7 @@ class RedirectHandler {
     if(rule.type === 'jsonLogic') {
       const result = jsonLogic.apply(rule.info.statement, req);
 
-      if(rule.info.returnsUrl && validator.isURL(result + '')) return result;
+      if(rule.info.returnsUrl && validator.isURL(`${result}`)) return result;
       if(result) return rule.target;
       return null;
     }

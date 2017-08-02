@@ -9,6 +9,6 @@ router.get('/userInfo', jwtCheck.express, (req, res) => {
   res.successJson(req.user);
 });
 
-router.get('/u/:slug', redirectHandler.handleRedirect);
+router.get(':slug', redirectHandler.handleRedirect);
 
 module.exports = router;

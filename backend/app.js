@@ -8,6 +8,7 @@ mongoose.Promise = require('bluebird');
 const errorHandlers = require('./lib/errorHandlers');
 const indexRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
+const apiRoute = require('./routes/api');
 const logger = require('./lib/logger').loggers.get('api');
 
 
@@ -20,6 +21,7 @@ require('./lib/extendExpress').extendResponse(express.response);
 
 app.use('/', indexRoute);
 app.use('/auth', authRoute);
+app.use('/api', apiRoute);
 
 app.use(errorHandlers.JwtErrorHandler);
 app.use(errorHandlers.ErrorHandler);

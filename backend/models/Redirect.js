@@ -15,7 +15,7 @@ const redirectSchema = new Schema({
   stats: {
     visits: { type: Number, default: 0 },
   },
-  defaultTarget: String,  // Target to redirect to if all rules fail
+  defaultTarget: { type: String, required: true },  // Target to redirect to if all rules fail
 });
 
 redirectSchema.index({ owner: 1 });
