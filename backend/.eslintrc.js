@@ -17,6 +17,7 @@ module.exports = {
       'if': {'after': false},
       'for': {'after': false},
       'while': {'after': false}
+      'catch': {'after': false}
     }}],
     'no-underscore-dangle': [ 'error', { 'allow': [ '_id' ] } ],
     'linebreak-style': 'off',

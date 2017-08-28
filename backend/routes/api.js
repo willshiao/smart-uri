@@ -11,7 +11,7 @@ router.use(bodyParser.json());
 router.use(jwtCheck.express);
 router.use(middleware.isAuthenticated);
 
-router.post('/redirect', redirectHandler.handleNew);
+router.post('/redirect', middleware.asyncHelper(redirectHandler.handleNew));
 
 router.put('/redirect/:id', redirectHandler.handleUpdate);
 

@@ -23,6 +23,14 @@ module.exports = {
       parseUserAgent: true,
     },
   },
+  redirect: {
+    slug: {  // Passed to the randomstring module: https://www.npmjs.com/package/randomstring
+      charset: 'alphanumeric',
+      length: '5',
+    },
+    slugWarning: 5,  // Number of DB collisions for the slug before issuing an warning
+    slugError: 100,  // Number of DB collisions for a slug before throwing an error
+  },
   user: {
     password: {
       minLength: 5,
