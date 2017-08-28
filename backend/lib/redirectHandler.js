@@ -88,6 +88,7 @@ class RedirectHandler {
             .exec();
         }
       }
+      data.owner = req.user._id;
 
       const redirect = new Redirect(data);
       await redirect.save();
@@ -111,6 +112,14 @@ class RedirectHandler {
       const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget'];  // Properties to keep from the JSON body
       if(req.user.role >= config.get('user.roles.Admin')) props.push('slug');
       const data = _.pick(req.body, props);
+
+      const redirect = await Redirect.findById(req.params.id);
+      if(redirect.length < 1) return res.failMsg('Redirect not found.');
+
+      if(req.user.role < config.get('user.roles.Admin') && req.user._id != redirect.owner) {
+        logger.warn(`Attempt by ${req.user._id} to access redirect ${redirect._id}`);
+        return res.failMsg('Insufficent permissions.');
+      }
 
       await Redirect.update({ _id: req.params.id }, { $set: data });
       res.successJson();
