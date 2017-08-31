@@ -71,6 +71,7 @@ class RedirectHandler {
 
       const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'slug', 'name'];  // Properties to keep from the JSON body
       const data = _.pick(req.body, props);
+      if(data.name.length > config.get('redirect.nameMaxLength')) return res.failMsg('Name is too long.');
 
       if(req.user.role < config.get('user.roles.Admin') || !req.body.slug) {  // Only let the user pick the slug if he's an admin
         let dbRes = [];
@@ -112,6 +113,7 @@ class RedirectHandler {
       const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'name'];  // Properties to keep from the JSON body
       if(req.user.role >= config.get('user.roles.Admin')) props.push('slug');
       const data = _.pick(req.body, props);
+      if(data.name.length > config.get('redirect.nameMaxLength')) return res.failMsg('Name is too long.');
 
       const redirect = await Redirect.findById(req.params.id);
       if(redirect.length < 1) return res.failMsg('Redirect not found.');

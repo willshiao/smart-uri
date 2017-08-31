@@ -7,6 +7,9 @@ const Schema = mongoose.Schema;
 const redirectRuleSchema = new Schema({
   name: String,  // Name of the rule
   info: { type: Schema.Types.Mixed, default: {} },  // Rule to evaluate
+  // jsonLogic rules use info.statement
+  //  roundRobin rules use info.targets
+
   type: { type: String, required: true },  // Statement type
   enabled: { type: Boolean, default: true },  // Whether or not the rule is active
   stats: {
