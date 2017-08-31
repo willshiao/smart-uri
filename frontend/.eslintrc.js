@@ -44,5 +44,7 @@ module.exports = {
     }}],
     // Allow reassigning to the state parameter for Vuex
     'no-param-reassign': ['error', { 'props': true, 'ignorePropertyModificationsFor': ['state'] }],
+    // Allow unary operators in the last part of for loops
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
   },
 };
