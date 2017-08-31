@@ -19,6 +19,8 @@ const logger = require('./lib/logger').loggers.get('api');
 const app = express();
 require('./lib/extendExpress').extendResponse(express.response);
 
+app.set('trust proxy', config.get('site.trustProxy'));
+
 app.use('/', indexRoute);
 app.use('/auth', authRoute);
 app.use('/api', apiRoute);

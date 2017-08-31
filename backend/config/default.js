@@ -3,6 +3,7 @@
 module.exports = {
   site: {
     port: 3000,
+    trustProxy: false,  // See https://expressjs.com/en/guide/behind-proxies.html
   },
   jwt: {
     secret: 'changeme',  // Secret key used for JWTs
