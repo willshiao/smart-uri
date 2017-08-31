@@ -69,7 +69,7 @@ class RedirectHandler {
     try {
       if(!req.body) return res.failMsg('JSON body required.');
 
-      const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'slug'];  // Properties to keep from the JSON body
+      const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'slug', 'name'];  // Properties to keep from the JSON body
       const data = _.pick(req.body, props);
 
       if(req.user.role < config.get('user.roles.Admin') || !req.body.slug) {  // Only let the user pick the slug if he's an admin
@@ -109,7 +109,7 @@ class RedirectHandler {
       if(!req.body) return res.failMsg('JSON body required.');
       if(!req.params.id) return res.failMsg('Target required.');  // No need to validate actual objectID, will be checked in update call
 
-      const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget'];  // Properties to keep from the JSON body
+      const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'name'];  // Properties to keep from the JSON body
       if(req.user.role >= config.get('user.roles.Admin')) props.push('slug');
       const data = _.pick(req.body, props);
 

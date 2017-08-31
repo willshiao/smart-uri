@@ -6,6 +6,7 @@ const redirectRuleSchema = require('./RedirectRule').schema;
 const Schema = mongoose.Schema;
 
 const redirectSchema = new Schema({
+  name: { type: String, default: 'None' },
   slug: String,
   rules: [redirectRuleSchema],
   enabled: { type: Boolean, default: true },  // Whether or not the redirect is enabled
