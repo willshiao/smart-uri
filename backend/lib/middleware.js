@@ -16,7 +16,7 @@ mw.isAdmin = (req, res, next) => {
 };
 
 mw.enableCrossOrigin = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', config.get('site.corsAllow'));
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   next();
 };

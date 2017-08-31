@@ -19,6 +19,7 @@ const logger = require('./lib/logger').loggers.get('api');
 const app = express();
 require('./lib/extendExpress').extendResponse(express.response);
 
+app.disable('x-powered-by');
 app.set('trust proxy', config.get('site.trustProxy'));
 
 app.use('/', indexRoute);
