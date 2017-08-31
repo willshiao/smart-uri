@@ -1,5 +1,5 @@
 <template>
-  <div class="container">Hello</div>
+  <div class="container">Hello {{loggedIn}}</div>
 </template>
 
 <script>
@@ -7,6 +7,11 @@ export default {
   name: 'home',
   data() {
     return {};
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.getters.loggedIn;
+    },
   },
 };
 </script>

@@ -10,8 +10,9 @@ const jwtCheck = require('../lib/jwtCheck');
 router.use(bodyParser.json());
 router.use(jwtCheck.express);
 router.use(middleware.isAuthenticated);
+router.use(middleware.enableCrossOrigin);
 
-router.post('/redirect', middleware.asyncHelper(redirectHandler.handleNew));
+router.post('/redirect', redirectHandler.handleNew);
 
 router.put('/redirect/:id', redirectHandler.handleUpdate);
 

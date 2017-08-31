@@ -4,11 +4,14 @@ import 'font-awesome/css/font-awesome.css';
 
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
+import VueSweetAlert from 'vue-sweetalert';
+
 import App from './App';
 import router from './router';
 import store from './store';
 
 Vue.use(BootstrapVue);
+Vue.use(VueSweetAlert);
 
 Vue.config.productionTip = false;
 

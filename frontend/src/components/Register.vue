@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     errorMessage() {
-      if (this.form.confirmPassword && this.form.password !== this.form.confirmPassword) return 'Passwords don\'t match';
+      if(this.form.confirmPassword && this.form.password !== this.form.confirmPassword) return 'Passwords don\'t match';
       return false;
     },
   },

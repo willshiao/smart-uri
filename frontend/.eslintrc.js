@@ -34,6 +34,15 @@ module.exports = {
       'optionalDependencies': ['test/unit/index.js']
     }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
-  }
-}
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    // don't require spaces after keywords
+    'keyword-spacing': ['error', {'overrides': {
+      'if': {'after': false},
+      'for': {'after': false},
+      'while': {'after': false},
+      'catch': {'after': false}
+    }}],
+    // Allow reassigning to the state parameter for Vuex
+    'no-param-reassign': ['error', { 'props': true, 'ignorePropertyModificationsFor': ['state'] }],
+  },
+};

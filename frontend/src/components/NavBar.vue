@@ -10,9 +10,20 @@
         <router-link tag="li" to="/">
           <a class="nav-link">Home</a>
         </router-link>
-        <router-link tag="li" to="/redirect">
+        <router-link tag="li" to="/redirect" v-if="loggedIn">
           <a class="nav-link">Add Redirect</a>
         </router-link>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <router-link tag="li" to="/register" v-if="!loggedIn">
+          <a class="nav-link">Register</a>
+        </router-link>
+        <router-link tag="li" to="/login" v-if="!loggedIn">
+          <a class="nav-link">Login</a>
+        </router-link>
+        <li v-if="loggedIn">
+          <a class="nav-link" href="#" v-on:click.prevent='logout'>Logout</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -24,6 +35,16 @@ export default {
   name: 'navbar',
   data() {
     return {};
+  },
+  methods: {
+    logout() {
+      this.$store.commit('logOut');
+    },
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.getters.loggedIn;
+    },
   },
 };
 </script>
