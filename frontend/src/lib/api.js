@@ -13,6 +13,13 @@ export default {
     });
   },
 
+  register({ email, password }) {
+    return axios.post(`${API_URL}/auth/register`, {
+      email,
+      password,
+    });
+  },
+
   request(endpoint, settings = {}) {
     return axios({
       url: `${API_URL}/${endpoint}`,

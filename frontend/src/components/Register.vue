@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import api from '@/lib/api';
+
 export default {
   name: 'register',
   data() {
@@ -40,6 +42,24 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
+      if(!this.errorMessage) {
+        api.register(this.form)
+          .then((res) => {
+            if(res.data.status === 'success') {
+              this.$swal({
+                title: 'Success',
+                text: 'Registered successfully.',
+                type: 'success',
+              });
+            } else {
+              this.$swal({
+                title: 'Failed to register',
+                text: res.data.message,
+                type: 'warning',
+              });
+            }
+          });
+      }
     },
   },
   computed: {
