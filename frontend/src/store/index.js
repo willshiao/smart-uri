@@ -32,6 +32,15 @@ export default new Vuex.Store({
         return false;
       }
     },
+    user(state) {
+      try {
+        if(!state.jwt.length === 0) return null;
+        return jwtDecode(state.jwt);
+      } catch(e) {
+        state.jwt = '';
+        return null;
+      }
+    },
   },
   plugins: [createPersistedState({ storage: window.sessionStorage })],
 });

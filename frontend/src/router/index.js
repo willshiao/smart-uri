@@ -5,9 +5,11 @@ import RedirectForm from '@/components/RedirectForm';
 import Login from '@/components/Login';
 import Register from '@/components/Register';
 
+import guards from './guards';
+
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -18,16 +20,23 @@ export default new Router({
       path: '/redirect',
       name: 'RedirectForm',
       component: RedirectForm,
+      meta: { requiresRole: 1 },
     },
     {
       path: '/login',
       name: 'Login',
       component: Login,
+      meta: { notLoggedIn: true },
     },
     {
       path: '/register',
       name: 'Register',
       component: Register,
+      meta: { notLoggedIn: true },
     },
   ],
 });
+
+router.beforeEach(guards.beforeEach);
+
+export default router;
