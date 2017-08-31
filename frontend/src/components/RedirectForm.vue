@@ -103,7 +103,11 @@ export default {
         this.submitPending = false;
         if(res.data.status === 'success') {
           console.log(res.data);
-          this.$swal({ type: 'success', title: 'Success', text: `New redirect successfully created with slug: ${res.data.data.slug}` });
+          const slug = res.data.data.slug;
+          this.$swal({
+            type: 'success',
+            title: 'Success',
+            html: `New redirect successfully created with slug: ${slug}. Available at <a href="${api.baseUrl}/${slug}">${api.baseUrl}/${slug}</a>` });
           return;
         }
         this.$swal({ type: 'warning', title: 'Failed to create redirect', text: res.data.message });
