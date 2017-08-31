@@ -72,11 +72,11 @@ class RedirectHandler {
       const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'slug'];  // Properties to keep from the JSON body
       const data = _.pick(req.body, props);
 
-      if(req.user.role < config.get('user.roles.Admin')) {  // Only let the user pick the slug if he's an admin
-        let dbRes = [true];
+      if(req.user.role < config.get('user.roles.Admin') || !req.body.slug) {  // Only let the user pick the slug if he's an admin
+        let dbRes = [];
         let count = 0;
 
-        while(dbRes.length > 0) {
+        do {
           if(count++ > config.get('redirect.slugError')) {
             throw new Error('Too many slug collisions.');
           } else if(count > config.get('redirect.slugWarning')) {
@@ -86,7 +86,7 @@ class RedirectHandler {
           dbRes = await Redirect.find({ slug: data.slug })
             .limit(1)
             .exec();
-        }
+        } while(dbRes.length > 0);
       }
       data.owner = req.user._id;
 
