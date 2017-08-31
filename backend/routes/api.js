@@ -7,10 +7,10 @@ const redirectHandler = require('../lib/redirectHandler');
 const middleware = require('../lib/middleware');
 const jwtCheck = require('../lib/jwtCheck');
 
+router.use(middleware.enableCrossOrigin);
 router.use(bodyParser.json());
 router.use(jwtCheck.express);
 router.use(middleware.isAuthenticated);
-router.use(middleware.enableCrossOrigin);
 
 router.post('/redirect', redirectHandler.handleNew);
 

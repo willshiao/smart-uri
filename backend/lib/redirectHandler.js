@@ -93,7 +93,7 @@ class RedirectHandler {
 
       const redirect = new Redirect(data);
       await redirect.save();
-      res.successJson({ redirect });
+      res.successJson(redirect);
 
     } catch(err) {
       RedirectHandler.handleError(res, err);
