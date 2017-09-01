@@ -95,14 +95,12 @@ export default {
         }
       }
       this.submitPending = true;
-      console.log(form);
       api.request('api/redirect', {
         method: 'POST',
         data: form,
       }).then((res) => {
         this.submitPending = false;
         if(res.data.status === 'success') {
-          console.log(res.data);
           const slug = res.data.data.slug;
           this.$swal({
             type: 'success',
