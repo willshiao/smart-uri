@@ -19,7 +19,7 @@ router.post('/login', (req, res) => {
   if(!req.body.email || !req.body.password) return res.failMsg('Email and password required.');
 
   let dbUser;
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: req.body.email.toLowerCase() })
     .lean()
     .exec()
     .then((user) => {
