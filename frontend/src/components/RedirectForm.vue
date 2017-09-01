@@ -21,14 +21,19 @@
           <h6 v-if="rule.type == 'jsonLogic'">Rule JSON</h6>
           <b-form-textarea v-if="rule.type == 'jsonLogic'" v-model="rule.info.statementStr" placeholder="JSON Logic Rule here" :rows="3"></b-form-textarea>
 
-          <h6 v-if="rule.type == 'jsonLogic'">Rule Target</h6>
-          <b-form-input v-if="rule.type == 'jsonLogic'" v-model="rule.target" type="text" placeholder="http://example.com"></b-form-input>
-          <b-form-text v-if="rule.type == 'jsonLogic'">The URL the user will be redirected to if the rule matches</b-form-text>
+          <div v-if="rule.type == 'jsonLogic'">
+            <h6>Rule Target</h6>
+            <b-form-input v-model="rule.target" type="text" placeholder="http://example.com"></b-form-input>
+            <b-form-text>The URL the user will be redirected to if the rule matches</b-form-text>
 
-          <h6 v-if="rule.type == 'roundRobin'">Round Robin Targets</h6>
-          <b-form-input v-if="rule.type == 'roundRobin'" v-model="rule.info.targetsStr" type="text" placeholder="Targets"></b-form-input>
-          <b-form-text v-if="rule.type == 'roundRobin'">Enter a comma-seperated list of targets to distribute requests over.</b-form-text>
+            <div><b-form-checkbox v-model="rule.info.returnsUrl">JSON Logic Rule returns URL</b-form-checkbox></div>
+          </div>
 
+          <div v-if="rule.type == 'roundRobin'">
+            <h6>Round Robin Targets</h6>
+            <b-form-input v-model="rule.info.targetsStr" type="text" placeholder="Targets"></b-form-input>
+            <b-form-text>Enter a comma-seperated list of targets to distribute requests over.</b-form-text>
+          </div>
 
           <b-button variant="danger" class="deleteRuleBtn" v-on:click="deleteRule(index)">Delete Rule</b-button>
         </div>
@@ -69,7 +74,7 @@ export default {
   },
   methods: {
     addRule() {
-      this.form.rules.push({ info: {} });
+      this.form.rules.push({ info: { returnsUrl: false } });
     },
     deleteRule(index) {
       this.form.rules.splice(index, 1);
