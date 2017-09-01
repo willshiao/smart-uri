@@ -26,7 +26,9 @@ module.exports = {
     },
   },
   redirect: {
+    maxRules: 10,
     nameMaxLength: 150,
+    ruleNameMaxLength: 150,
     slug: {  // Passed to the randomstring module: https://www.npmjs.com/package/randomstring
       charset: 'alphanumeric',
       length: '5',

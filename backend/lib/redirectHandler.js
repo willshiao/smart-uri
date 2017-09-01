@@ -71,7 +71,8 @@ class RedirectHandler {
 
       const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'slug', 'name'];  // Properties to keep from the JSON body
       const data = _.pick(req.body, props);
-      if(data.name.length > config.get('redirect.nameMaxLength')) return res.failMsg('Name is too long.');
+      const message = RedirectHandler.validateRedirect(data);
+      if(message) return res.failMsg(message);
 
       if(req.user.role < config.get('user.roles.Admin') || !req.body.slug) {  // Only let the user pick the slug if he's an admin
         let dbRes = [];
@@ -113,7 +114,8 @@ class RedirectHandler {
       const props = ['rules', 'enabled', 'extraInfo', 'defaultTarget', 'name'];  // Properties to keep from the JSON body
       if(req.user.role >= config.get('user.roles.Admin')) props.push('slug');
       const data = _.pick(req.body, props);
-      if(data.name.length > config.get('redirect.nameMaxLength')) return res.failMsg('Name is too long.');
+      const message = RedirectHandler.validateRedirect(data);
+      if(message) return res.failMsg(message);
 
       const redirect = await Redirect.findById(req.params.id);
       if(redirect.length < 1) return res.failMsg('Redirect not found.');
@@ -129,6 +131,37 @@ class RedirectHandler {
     } catch(err) {
       RedirectHandler.handleError(res, err);
     }
+  }
+
+  static validateRedirect(r) {
+    if(r.name.length > config.get('redirect.nameMaxLength')) return 'Name is too long.';
+    if(!r.defaultTarget) return 'Default target required';
+    if(!validator.isURL(r.defaultTarget)) return 'Invalid default target';
+    if(r.rules && r.rules.length > config.get('redirect.maxRules'))
+      return `Too many rules: ${config.get('redirect.maxRules')} is the maximium allowed.`;
+
+    for(let i = 0; i < r.rules.length; ++i) {
+      const data = RedirectHandler.cleanRule(r.rules[i]);
+      if(typeof data === 'string') return data;
+      r.rules[i] = data;
+    }
+  }
+
+  static cleanRule({ name = 'None', info = {}, type, enabled, stats, target }) {
+    const end = `for rule "${name}"`;
+
+    if(name.length > config.get('redirect.ruleNameMaxLength')) return `Name is too long ${end}`;
+    if(target && !validator.isURL(target)) return `Invalid default target ${end}`;
+    if(type === 'roundRobin') {
+      if(!info.targets) return `Targets are required ${end}`;
+      if(!info.targets.every(t => validator.isURL(t))) return `One of the targets is invalid ${end}`;
+    } else if(type === 'jsonLogic') {
+      if(!info.statement) return `Invalid JSON Logic statement ${end}`;
+    } else {
+      return `Invalid rule type ${end}`;
+    }
+
+    return { name, info, type, enabled, stats, target };
   }
 
   static extractInfo(req) {
