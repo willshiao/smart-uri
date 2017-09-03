@@ -1,5 +1,5 @@
 <template>
-<div class="d-flex align-items-center flex-column justify-content-center h-100 bg-dark text-white" id="header">
+<div class="d-flex align-items-center flex-column justify-content-center" id="header">
     <h3>Login</h3>
     <b-form @submit="onSubmit" class="col-3 mx-auto">
         <div class="form-group">
@@ -56,8 +56,5 @@ export default {
 <style scoped>
 #header {
   padding-top: 10%;
-}
-#header > h3 {
-  color: black;
 }
 </style>

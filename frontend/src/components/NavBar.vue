@@ -1,32 +1,30 @@
 <template>
-  <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">SmartURI</a>
+  <b-navbar toggleable="lg" type="dark" variant="primary">
+    <b-nav-toggle target="nav_collapse"></b-nav-toggle>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <router-link tag="li" to="/">
-          <a class="nav-link">Home</a>
-        </router-link>
-        <router-link tag="li" to="/redirect" v-if="loggedIn">
-          <a class="nav-link">Add Redirect</a>
-        </router-link>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <router-link tag="li" to="/register" v-if="!loggedIn">
-          <a class="nav-link">Register</a>
-        </router-link>
-        <router-link tag="li" to="/login" v-if="!loggedIn">
-          <a class="nav-link">Login</a>
-        </router-link>
-        <li v-if="loggedIn">
-          <a class="nav-link" href="#" v-on:click.prevent='logout'>Logout</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    <b-navbar-brand to="/">Smart URI</b-navbar-brand>
+
+    <b-collapse is-nav id="nav_collapse">
+
+      <b-nav is-nav-bar>
+        <b-nav-item to="/home">Home</b-nav-item>
+        <b-nav-item v-if="loggedIn" to="/redirect">Add Redirect</b-nav-item>
+      </b-nav>
+
+      <b-nav is-nav-bar class="ml-auto">
+        <b-nav-item v-if="!loggedIn" to="/login">Login</b-nav-item>
+        <b-nav-item v-if="!loggedIn" to="/register">Register</b-nav-item>
+
+        <b-nav-item-dropdown right v-if="loggedIn">
+          <template slot="button-content">
+            User
+          </template>
+          <b-dropdown-item v-on:click.prevent='logout'>Log Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-nav>
+
+    </b-collapse>
+  </b-navbar>
 </template>
 
 
