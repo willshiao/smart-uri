@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const config = require('config');
-const bcrypt = require('bcrypt-as-promised');
+const bcrypt = require('bcrypt');
 const Promise = require('bluebird');
 
 const Schema = mongoose.Schema;
