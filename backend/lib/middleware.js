@@ -6,13 +6,13 @@ const Promise = require('bluebird');
 const mw = {};
 
 mw.isAuthenticated = (req, res, next) => {
-  if(req.user.role >= config.get('user.roles.User')) return next();
-  res.fail('Must be authenticated.');
+  if(req.user && req.user.role >= config.get('user.roles.User')) return next();
+  res.failMsg('Must be authenticated.');
 };
 
 mw.isAdmin = (req, res, next) => {
   if(req.user && req.user.role >= config.get('user.user.Admin')) return next();
-  res.fail('Insufficient permissions');
+  res.failMsg('Insufficient permissions');
 };
 
 mw.enableCrossOrigin = (req, res, next) => {
