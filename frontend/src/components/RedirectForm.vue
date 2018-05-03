@@ -45,10 +45,18 @@
       <b-form-text>This will the be the URL used if no rules match.</b-form-text>
       <p></p>
 
+      <div v-if="user.role >= 10">
+        <h5>Slug</h5>
+        <b-form-input v-model="form.slug" type="text" placeholder="Slug"></b-form-input>
+        <b-form-text>Will be randomly assigned if left empty.</b-form-text>
+        <p></p>
+      </div>
+
       <div><b-form-checkbox id="enabledBox" v-model="form.enabled">Enable</b-form-checkbox></div>
       <div><b-form-checkbox id="extraInfoBox" v-model="form.extraInfo">Collect additional request information</b-form-checkbox></div>
 
       <b-button variant="primary" type="submit" v-bind:class="{ disabled: submitPending }">Create Redirect</b-button>
+
     </b-form>
   </div>
 </template>
@@ -56,11 +64,13 @@
 <script>
 import Vue from 'vue';
 import api from '@/lib/api';
+import store from '@/store';
 
 export default {
   name: 'redirect-form',
   data() {
     return {
+      user: store.getters.user,
       form: {
         rules: [],
         enabled: true,
