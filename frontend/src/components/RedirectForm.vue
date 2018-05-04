@@ -117,7 +117,7 @@ export default {
         }
       }
       this.submitPending = true;
-      api.request('api/redirect', {
+      api.request('api/redirects', {
         method: 'POST',
         data: form,
       }).then((res) => {
@@ -133,6 +133,7 @@ export default {
         this.$swal({ type: 'warning', title: 'Failed to create redirect', text: res.data.message });
       }).catch(() => {
         this.$swal({ type: 'error', title: 'Failed to connect to API server', text: 'Check your internet and try logging out and back in again.' });
+        this.submitPending = false;
       });
     },
   },

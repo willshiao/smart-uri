@@ -10,6 +10,7 @@
         {{data.item.owner.email}}
       </template>
     </b-table>
+    <b-button v-if="isAdmin" v-on:click="downloadRequests">Download Requests</b-button>
   </div>
 </template>
 
@@ -31,13 +32,32 @@ export default {
       ],
       deleteDisabled: false,
       user: store.getters.user,
+      isAdmin: store.getters.user.role >= 10,
     };
-    if(data.user.role >= 10) {
+    if(data.isAdmin) {
       data.fields.splice(3, 0, { key: 'owner', sortable: true });
     }
     return data;
   },
   methods: {
+    downloadRequests() {
+      api.request('api/requests', { responseType: 'blob' })
+        .then((res) => {
+          const timeStr = (new Date())
+            .toDateString()
+            .split(' ')
+            .join('_');
+          const dataUrl = URL.createObjectURL(res.data);
+          const a = document.createElement('a');
+          document.body.appendChild(a);
+          a.style = 'display: none';
+          a.href = dataUrl;
+          a.download = `requests-${timeStr}.txt`;
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(dataUrl);
+        });
+    },
     deleteRow(id) {
       this.deleteDisabled = true;
       api.request(`api/redirects/${id}`, { method: 'DELETE' })

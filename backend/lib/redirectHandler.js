@@ -18,6 +18,9 @@ class RedirectHandler {
 
   static handleGetRequests(req, res) {
     logger.info(`Request download initiated by: ${req.ip}`)
+
+    res.set('Content-Type', 'text/plain');
+
     Request.find()
       .cursor()
       .on('data', (data) => {
