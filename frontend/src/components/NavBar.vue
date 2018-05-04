@@ -18,7 +18,8 @@
 
         <b-nav-item-dropdown right v-if="loggedIn">
           <template slot="button-content">
-            {{user.email}}
+            <span v-if="loggedIn">{{user.email}}</span>
+            <span v-else>User</span>
           </template>
           <b-dropdown-item v-on:click.prevent='logout'>Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -35,7 +36,7 @@ import store from '@/store';
 export default {
   name: 'navbar',
   data() {
-    return { user: store.getters.user };
+    return {};
   },
   methods: {
     logout() {
@@ -43,6 +44,9 @@ export default {
     },
   },
   computed: {
+    user() {
+      return store.getters.user;
+    },
     loggedIn() {
       return this.$store.getters.loggedIn;
     },
