@@ -41,6 +41,7 @@ class RedirectHandler {
       name: 1,
       slug: 1,
       enabled: 1,
+      defaultTarget: 1,
     }
 
     if(isAdmin) fields.owner = 1;

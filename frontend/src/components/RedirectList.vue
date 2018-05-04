@@ -26,6 +26,7 @@ export default {
         { key: 'name', sortable: true },
         { key: 'slug', sortable: true },
         { key: 'enabled', sortable: true },
+        { key: 'defaultTarget', sortable: true, name: 'Default Target' },
         'delete',
       ],
       deleteDisabled: false,
