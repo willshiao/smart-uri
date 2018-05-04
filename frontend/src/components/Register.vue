@@ -50,7 +50,11 @@ export default {
                 title: 'Success',
                 text: 'Registered successfully.',
                 type: 'success',
-              });
+              })
+                .then(() => {
+                  this.$store.commit('logIn', res.data.data.jwt);
+                  this.$router.push('/');
+                });
             } else {
               this.$swal({
                 title: 'Failed to register',
