@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home';
 import RedirectForm from '@/components/RedirectForm';
+import RedirectList from '@/components/RedirectList';
 import Login from '@/components/Login';
 import Register from '@/components/Register';
 
@@ -24,6 +25,12 @@ const router = new Router({
       path: '/redirect',
       name: 'RedirectForm',
       component: RedirectForm,
+      meta: { requiresRole: 1 },
+    },
+    {
+      path: '/redirects',
+      name: 'RedirectList',
+      component: RedirectList,
       meta: { requiresRole: 1 },
     },
     {

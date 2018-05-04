@@ -9,6 +9,7 @@
       <b-nav is-nav-bar>
         <b-nav-item to="/home">Home</b-nav-item>
         <b-nav-item v-if="loggedIn" to="/redirect">Add Redirect</b-nav-item>
+        <b-nav-item v-if="loggedIn" to="/redirects">View Redirects</b-nav-item>
       </b-nav>
 
       <b-nav is-nav-bar class="ml-auto">
