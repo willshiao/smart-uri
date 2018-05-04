@@ -24,6 +24,7 @@ module.exports = {
   },
   // add your custom rules here
   'rules': {
+    'linebreak-style': 0,
     'no-underscore-dangle': ['error', { 'allow': ['_id'] }],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
