@@ -21,4 +21,7 @@ router.route('/redirects/:id')
   .put(redirectHandler.handleUpdate)
   .delete(redirectHandler.handleDelete);
 
+router.route('/requests')
+  .get(middleware.isAdmin, redirectHandler.handleGetRequests);
+
 module.exports = router;

@@ -16,10 +16,22 @@ const MissingRedirectError = require('../lib/error/MissingRedirectError');
 
 class RedirectHandler {
 
+  static handleGetRequests(req, res) {
+    logger.info(`Request download initiated by: ${req.ip}`)
+    Request.find()
+      .cursor()
+      .on('data', (data) => {
+        res.write(JSON.stringify(data) + '\n');
+      })
+      .on('end', () => {
+        res.end();
+      })
+  }
+
   static handleDelete(req, res) {
-    const isAdmin = (req.user.role >= config.get('user.roles.Admin'))
-    if(!req.params || !req.params.id) return res.failMsg('Redirect ID required')
-    const searchParams = { _id: req.params.id }
+    const isAdmin = (req.user.role >= config.get('user.roles.Admin'));
+    if(!req.params || !req.params.id) return res.failMsg('Redirect ID required');
+    const searchParams = { _id: req.params.id };
     if(!isAdmin) searchParams.owner = req.user._id; 
 
     let failed = false;
