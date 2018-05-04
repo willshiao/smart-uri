@@ -13,6 +13,7 @@ router.use(jwtCheck.express);
 router.use(middleware.isAuthenticated);
 
 router.post('/redirect', redirectHandler.handleNew);
+router.get('/redirects', middleware.isAdmin, redirectHandler.handleGet);
 
 router.put('/redirect/:id', redirectHandler.handleUpdate);
 

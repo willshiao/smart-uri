@@ -16,6 +16,25 @@ const MissingRedirectError = require('../lib/error/MissingRedirectError');
 
 class RedirectHandler {
 
+  static handleGet(req, res) {
+    let query = (req.user.role >= config.get('user.roles.Admin')) ?
+      {}
+      : { owner: req.user._id }
+
+    Redirect.find(query, {
+      name: 1,
+      slug: 1,
+      enabled: 1,
+      owner: 1
+    })
+      .lean()
+      .exec()
+      .then((data) => {
+        res.successJson(data);
+      })
+      .catch(err => RedirectHandler.handleError(res, err));
+  }
+
   static handleRedirect(req, res) {
     if(!req.params.slug) return RedirectHandler.handleMissing(req.params.slug, res);
     const slug = req.params.slug;

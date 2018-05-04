@@ -11,7 +11,7 @@ mw.isAuthenticated = (req, res, next) => {
 };
 
 mw.isAdmin = (req, res, next) => {
-  if(req.user && req.user.role >= config.get('user.user.Admin')) return next();
+  if(req.user && req.user.role >= config.get('user.roles.Admin')) return next();
   res.failMsg('Insufficient permissions');
 };
 
