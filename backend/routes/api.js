@@ -2,6 +2,7 @@
 
 const router = require('express').Router();
 const bodyParser = require('body-parser');
+const compression = require('compression');
 const cors = require('cors');
 
 const redirectHandler = require('../lib/redirectHandler');
@@ -22,6 +23,6 @@ router.route('/redirects/:id')
   .delete(redirectHandler.handleDelete);
 
 router.route('/requests')
-  .get(middleware.isAdmin, redirectHandler.handleGetRequests);
+  .get(middleware.isAdmin, compression(), redirectHandler.handleGetRequests);
 
 module.exports = router;
