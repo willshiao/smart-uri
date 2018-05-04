@@ -6,13 +6,13 @@
 
     <b-collapse is-nav id="nav_collapse">
 
-      <b-nav is-nav-bar>
+      <b-navbar-nav>
         <b-nav-item to="/home">Home</b-nav-item>
         <b-nav-item v-if="loggedIn" to="/redirect">Add Redirect</b-nav-item>
         <b-nav-item v-if="loggedIn" to="/redirects">View Redirects</b-nav-item>
-      </b-nav>
+      </b-navbar-nav>
 
-      <b-nav is-nav-bar class="ml-auto">
+      <b-navbar-nav class="ml-auto">
         <b-nav-item v-if="!loggedIn" to="/login">Login</b-nav-item>
         <b-nav-item v-if="!loggedIn" to="/register">Register</b-nav-item>
 
@@ -22,7 +22,7 @@
           </template>
           <b-dropdown-item v-on:click.prevent='logout'>Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
-      </b-nav>
+      </b-navbar-nav>
 
     </b-collapse>
   </b-navbar>

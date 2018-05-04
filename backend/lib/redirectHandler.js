@@ -16,17 +16,37 @@ const MissingRedirectError = require('../lib/error/MissingRedirectError');
 
 class RedirectHandler {
 
-  static handleGet(req, res) {
-    let query = (req.user.role >= config.get('user.roles.Admin')) ?
-      {}
-      : { owner: req.user._id }
+  static handleDelete(req, res) {
+    const isAdmin = (req.user.role >= config.get('user.roles.Admin'))
+    if(!req.params || !req.params.id) return res.failMsg('Redirect ID required')
+    const searchParams = { _id: req.params.id }
+    if(!isAdmin) searchParams.owner = req.user._id; 
 
-    Redirect.find(query, {
+    let failed = false;
+    Redirect.remove(searchParams)
+      .lean()
+      .exec()
+      .then(({ result }) => {
+        if(result.n <= 0) return res.failMsg('Redirect not found')
+        logger.debug(`Successfully deleted: ${req.params.id}`)
+        res.successJson()
+      })
+      .catch(err => RedirectHandler.handleError(res, err));
+  }
+
+  static handleGet(req, res) {
+    const isAdmin = (req.user.role >= config.get('user.roles.Admin'))
+    const query =  isAdmin ? {} : { owner: req.user._id }
+    const fields = {
       name: 1,
       slug: 1,
       enabled: 1,
-      owner: 1
-    })
+    }
+
+    if(isAdmin) fields.owner = 1;
+    const st = Redirect.find(query, fields);
+    if(isAdmin) st.populate('owner');
+    st
       .lean()
       .exec()
       .then((data) => {
@@ -153,6 +173,7 @@ class RedirectHandler {
   }
 
   static validateRedirect(r) {
+    if(!r.name) return 'Name is required';
     if(r.name.length > config.get('redirect.nameMaxLength')) return 'Name is too long.';
     if(!r.defaultTarget) return 'Default target required';
     if(!validator.isURL(r.defaultTarget)) return 'Invalid default target';

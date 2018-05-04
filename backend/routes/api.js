@@ -2,19 +2,23 @@
 
 const router = require('express').Router();
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const redirectHandler = require('../lib/redirectHandler');
 const middleware = require('../lib/middleware');
 const jwtCheck = require('../lib/jwtCheck');
 
-router.use(middleware.enableCrossOrigin);
 router.use(bodyParser.json());
+router.use(cors());
 router.use(jwtCheck.express);
 router.use(middleware.isAuthenticated);
 
-router.post('/redirect', redirectHandler.handleNew);
-router.get('/redirects', middleware.isAdmin, redirectHandler.handleGet);
+router.route('/redirects')
+  .post(redirectHandler.handleNew)
+  .get(redirectHandler.handleGet);
 
-router.put('/redirect/:id', redirectHandler.handleUpdate);
+router.route('/redirects/:id')
+  .put(redirectHandler.handleUpdate)
+  .delete(redirectHandler.handleDelete);
 
 module.exports = router;

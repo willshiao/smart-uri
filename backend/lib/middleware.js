@@ -15,12 +15,6 @@ mw.isAdmin = (req, res, next) => {
   res.failMsg('Insufficient permissions');
 };
 
-mw.enableCrossOrigin = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', config.get('site.corsAllow'));
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-};
-
 mw.asyncHelper = fn =>
   (req, res, next) => {
     Promise.resolve(fn(req, res, next))

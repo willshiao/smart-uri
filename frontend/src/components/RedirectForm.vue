@@ -52,10 +52,16 @@
         <p></p>
       </div>
 
-      <div><b-form-checkbox id="enabledBox" v-model="form.enabled">Enable</b-form-checkbox></div>
-      <div><b-form-checkbox id="extraInfoBox" v-model="form.extraInfo">Collect additional request information</b-form-checkbox></div>
+      <div>
+        <b-form-checkbox id="enabledBox" v-model="form.enabled">Enable</b-form-checkbox>
+      </div>
+      <div>
+        <b-form-checkbox id="extraInfoBox" v-model="form.extraInfo">Collect additional request information</b-form-checkbox>
+      </div>
 
-      <b-button variant="primary" type="submit" v-bind:class="{ disabled: submitPending }">Create Redirect</b-button>
+      <div id="submitDiv">
+        <b-button variant="primary" type="submit" v-bind:class="{ disabled: submitPending }">Create Redirect</b-button>  
+      </div>
 
     </b-form>
   </div>
@@ -74,6 +80,7 @@ export default {
       form: {
         rules: [],
         enabled: true,
+        extraInfo: true,
       },
       ruleOptions: {
         jsonLogic: 'JSON Logic',
@@ -144,6 +151,10 @@ div#rules-container {
 
 .addRuleBtn {
   margin-left: 2em;
+}
+
+#submitDiv {
+  margin-top: 25px;
 }
 
 div.rule {

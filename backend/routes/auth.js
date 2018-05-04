@@ -3,16 +3,16 @@
 const bodyParser = require('body-parser');
 const router = require('express').Router();
 const config = require('config');
+const cors = require('cors');
 const validator = require('validator');
 
 const logger = require('../lib/logger').loggers.get('api');
 const AuthError = require('../lib/error/AuthError');
 const jwtCheck = require('../lib/jwtCheck');
-const middleware = require('../lib/middleware');
 const User = require('../models/User');
 
 router.use(bodyParser.json());
-router.use(middleware.enableCrossOrigin);
+router.use(cors());
 
 router.post('/login', (req, res) => {
   if(!req.body) return res.failMsg('Invalid information');
