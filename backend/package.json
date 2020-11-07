@@ -16,7 +16,7 @@
     "cors": "^2.8.4",
     "device": "^0.3.9",
     "express": "^4.16.3",
-    "express-jwt": "^5.3.1",
+    "express-jwt": "^6.0.0",
     "json-logic-js": "^1.2.2",
     "jsonwebtoken": "^7.4.3",
     "lodash": "^4.17.20",
