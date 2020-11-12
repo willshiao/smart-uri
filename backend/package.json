@@ -17,7 +17,7 @@
     "device": "^0.3.9",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
-    "json-logic-js": "^1.2.2",
+    "json-logic-js": "^2.0.0",
     "jsonwebtoken": "^7.4.3",
     "lodash": "^4.17.20",
     "mongoose": "^4.13.12",
