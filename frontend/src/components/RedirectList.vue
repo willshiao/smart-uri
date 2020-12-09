@@ -1,13 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <h3>Redirects</h3>
     <b-table striped hover :items="redirects" :fields='fields'>
-      <template slot="delete" slot-scope="data">
+      <template #cell(delete)="data">
         <b-button variant="danger" v-on:click="deleteRow(data.item._id)" :disabled="deleteDisabled">Delete</b-button>
-      </template>
-
-      <template slot="owner" slot-scope="data">
-        {{data.item.owner.email}}
       </template>
     </b-table>
     <b-button v-if="isAdmin" v-on:click="downloadRequests">Download Requests</b-button>
