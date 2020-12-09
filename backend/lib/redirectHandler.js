@@ -66,8 +66,10 @@ class RedirectHandler {
       .lean()
       .exec()
       .then((data) => {
-        if (data.owner) {
-          data.owner.email = (data.owner.email !== undefined) ? data.owner.email : null
+        data.forEach(()) => {
+          if (data.owner) {
+            data.owner = (data.owner.email !== undefined) ? data.owner.email : null
+          }
         }
         res.successJson(data);
       })
