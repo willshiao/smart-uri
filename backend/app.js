@@ -11,7 +11,6 @@ const authRoute = require('./routes/auth');
 const apiRoute = require('./routes/api');
 const logger = require('./lib/logger').loggers.get('api');
 
-
 //-------------------
 // Initialization
 //-------------------
