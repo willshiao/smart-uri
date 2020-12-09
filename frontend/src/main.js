@@ -1,9 +1,9 @@
+import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import 'font-awesome/css/font-awesome.css';
 
 import Vue from 'vue';
-import BootstrapVue from 'bootstrap-vue';
+import { BootstrapVue } from 'bootstrap-vue';
 import VueSweetAlert from 'vue-sweetalert';
 
 import App from './App';
@@ -13,13 +13,10 @@ import store from './store';
 Vue.use(BootstrapVue);
 Vue.use(VueSweetAlert);
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  render: h => h(App),
   router,
-  store,
-  template: '<App/>',
-  components: { App },
-});
+  store
+}).$mount('#app')

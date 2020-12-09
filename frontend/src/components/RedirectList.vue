@@ -2,11 +2,11 @@
   <div class="container">
     <h3>Redirects</h3>
     <b-table striped hover :items="redirects" :fields='fields'>
-      <template slot="delete" scope="data">
+      <template slot="delete" slot-scope="data">
         <b-button variant="danger" v-on:click="deleteRow(data.item._id)" :disabled="deleteDisabled">Delete</b-button>
       </template>
 
-      <template slot="owner" scope="data">
+      <template slot="owner" slot-scope="data">
         {{data.item.owner.email}}
       </template>
     </b-table>

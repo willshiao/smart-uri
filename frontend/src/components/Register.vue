@@ -16,7 +16,7 @@
       </b-form-group>
 
       <b-form-group label="Confirm Password" label-for="confirm-password">
-        <b-form-input id="confirm-password" type="password" v-model="form.confirmPassword" required placeholder="Confirm password"></b-form-input :state="confirmPasswordState">
+        <b-form-input id="confirm-password" type="password" v-model="form.confirmPassword" required placeholder="Confirm password" :state="confirmPasswordState"></b-form-input>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>

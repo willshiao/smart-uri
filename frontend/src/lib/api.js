@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from '@/store';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://wls.ai';
 
 export default {
   baseUrl: API_URL,

@@ -11,7 +11,7 @@
 
       <h5>Rules</h5>
       <div id="rules-container">
-        <div class="rule" v-for="(rule, index) in form.rules">
+        <div class="rule" v-for="(rule, index) in form.rules" :key="index">
           <h6>Rule name</h6>
           <b-form-input v-model="rule.name" type="text" placeholder="Rule name" maxlength="150"></b-form-input>
 
