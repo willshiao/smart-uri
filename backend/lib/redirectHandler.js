@@ -70,7 +70,7 @@ class RedirectHandler {
           if (redirect.owner) {
             redirect.owner = (redirect.owner.email !== undefined) ? redirect.owner.email : null
           }
-        }
+        })
         res.successJson(data);
       })
       .catch(err => RedirectHandler.handleError(res, err));
