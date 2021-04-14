@@ -35,6 +35,7 @@ module.exports = {
     },
     slugWarning: 5,  // Number of DB collisions for the slug before issuing an warning
     slugError: 100,  // Number of DB collisions for a slug before throwing an error
+    defaultRedirect: 'https://github.com/willshiao',  // Default redirect on visiting site root
   },
   user: {
     password: {
